@@ -20,8 +20,8 @@ class GameOfLife {
     for (let y = 0; y < this.height; y++) {
       this.grid[y] = [];
       for (let x = 0; x < this.width; x++) {
-        this.grid[y][x] = Math.round(Math.random());
-        // this.grid[y][x] = 0;
+        // this.grid[y][x] = Math.round(Math.random());
+        this.grid[y][x] = 0;
       }
     }
 
