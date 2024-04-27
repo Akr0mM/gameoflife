@@ -11,13 +11,17 @@ class GameOfLife {
     this.height = config.height;
     this.bs = this.ch / this.height;
     this.inSimulation = false;
-    this.displayGrid = false;
+    this.displayGrid = true;
+    this.nbOfIterations = 0;
+
+    $('#fps').text(Math.round(1000 / this.fps * 10) / 10);
 
     this.grid = [];
     for (let y = 0; y < this.height; y++) {
       this.grid[y] = [];
       for (let x = 0; x < this.width; x++) {
-        this.grid[y][x] = 0;
+        this.grid[y][x] = Math.round(Math.random());
+        // this.grid[y][x] = 0;
       }
     }
 
@@ -42,39 +46,92 @@ class GameOfLife {
       this.draw();
     });
 
-    $('#play').on('click', event => {
-      if (!this.inSimulation) {
-        this.simulation();
-        event.currentTarget.textContent = 'Stop';
+    $('.play').on('click', () => {
+      if (this.inSimulation) {
+        this.stopSimulation(); 
       } else {
-        window.clearInterval(this.game)
-        event.currentTarget.textContent = 'Play';
+        this.simulation();
       }
-
-      this.inSimulation = !this.inSimulation;
     })
 
-    $('#display-grid').on('click', () => {
+    $('.display-grid').on('click', event => {
       if (this.displayGrid) {
-        $('#turn').text('On');
+        event.currentTarget.textContent = 'Grid On'
       } else {
-        $('#turn').text('Off');
+        event.currentTarget.textContent = 'Grid Off'
       }
 
       this.displayGrid = !this.displayGrid;
 
       this.draw();
     })
+
+    $('.clear').on('click', () => {
+      this.stopSimulation();
+
+      this.nbOfIterations = 0;
+      $('#iterations').text(this.nbOfIterations);
+
+      this.grid = [];
+      for (let y = 0; y < this.height; y++) {
+        this.grid[y] = [];
+        for (let x = 0; x < this.width; x++) {
+          this.grid[y][x] = 0;
+        }
+      }
+
+      this.draw();
+    })
+    
+    $('.plus').on('click', () => {
+      this.fps -= 10;
+
+      if (this.fps < 1) this.fps = 1
+
+      if (this.inSimulation) this.simulation();
+      $('#fps').text(Math.round(1000 / this.fps * 10) / 10);
+    })
+
+    $('.less').on('click', () => {
+      this.fps += 10;
+
+      if (this.fps > 1500) this.fps = 1500
+
+      if (this.inSimulation) this.simulation();
+      $('#fps').text(Math.round(1000 / this.fps * 10) / 10);
+    })
   }
 
   simulation() {
+    $('.play').text('Stop');
+    this.inSimulation = true;
+
+    window.clearInterval(this.game);
+
     this.game = window.setInterval(() => {
       this.update()
       this.draw()
     }, this.fps)
+
+    $('#fps').text(Math.round(1000 / this.fps * 10) / 10);
+  }
+
+  stopSimulation() {
+    $('.play').text('Play');
+    
+    this.inSimulation = !this.inSimulation;
+    window.clearInterval(this.game)
   }
 
   update() {
+    if (this.grid.every(row => row.every(cell => cell === 0))) {
+      this.nbOfIterations = 0;
+      $('#iterations').text(this.nbOfIterations);
+
+      this.stopSimulation();
+      return;
+    }
+
     let newGrid = [];
     for (let y = 0; y < this.height; y++) {
       newGrid[y] = [];
@@ -132,6 +189,9 @@ class GameOfLife {
       }
     }
 
+    this.nbOfIterations += 1;
+    $('#iterations').text(this.nbOfIterations);
+    
     this.grid = newGrid;
   }
 

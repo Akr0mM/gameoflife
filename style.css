@@ -2,16 +2,17 @@
 
 canvas {
   border: 1px solid black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 body {
   margin: 0;
   padding: 0;
-
+  
   display: flex;
-  justify-content: center;
-  align-items: center;
-  /* flex-direction: column; */
 
   background-color: #eee;
   user-select: none;
@@ -21,11 +22,31 @@ body {
   font-style: normal;
 }
 
+.stats {
+  width: fit-content;
+  position: absolute;
+  top: calc(50% - 411px);
+  left: 50%;
+  transform: translate(-50%, -100%);
+}
+
+.commands {
+  display: grid;
+  grid-gap: 10px;
+  position: absolute;
+  top: 50%;
+  left: calc(50% + 416px);
+  transform: translate(0, -50%);
+}
+
+.speed {
+  display: flex;
+}
+
 .btn {
-  width: min-content;
-  display: inline;
+  width: fit-content;
+  display: flex;
   cursor: pointer;
-  margin-left: 10px;
   background-color: #ccc;
   border-radius: 5px;
   padding: 3px;

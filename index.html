@@ -7,12 +7,16 @@
   <title>Game of Life</title>
 </head>
 <body>
+  <div class="stats">Frame per second : <span id="fps"></span> | Number of iterations : <span id="iterations">0</span></div>
+
   <canvas></canvas>
-  <div>
-    <div id="play" class="btn">Play</div>
-    <div class="btn" id="display-grid">Grid <span id="turn">On</span></div>
-  </div>
-  
+
+  <div class="commands">
+    <div class="btn play">Play</div>
+    <div class="speed"><div class="btn less">-</div><div class="btn plus" style="margin-left: 10px;">+</div></div>
+    <div class="btn display-grid">Grid Off</div>
+    <div class="btn clear">Clear</div>
+  </div>  
 </body>
 <script src="./main.js"></script>
 </html>
